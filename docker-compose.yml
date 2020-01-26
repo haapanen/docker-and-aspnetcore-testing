@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    links: 
+      - rabbitmq
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "15672:15672"
+  backgroundservice:
+    image: ${DOCKER_REGISTRY}backgroundservice
+    build:
+      context: .
+      dockerfile: BackgroundService/Dockerfile
